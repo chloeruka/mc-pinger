@@ -1,6 +1,7 @@
 package mcpinger
 
 import (
+	"log"
 	"encoding/json"
 )
 
@@ -36,5 +37,6 @@ type ServerInfo struct {
 func parseServerInfo(infoJson []byte) (*ServerInfo, error) {
 	info := new(ServerInfo)
 	err := json.Unmarshal(infoJson, info)
+	log.Printf("parseserverinfo: %+v %e", info, err)
 	return info, err
 }

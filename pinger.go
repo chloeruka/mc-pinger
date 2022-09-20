@@ -9,6 +9,7 @@ import (
 	"net"
 	"strconv"
 	"time"
+	"log"
 
 	enc "github.com/Raqbit/mc-pinger/encoding"
 	"github.com/Raqbit/mc-pinger/packet"
@@ -113,7 +114,7 @@ func (p *mcPinger) ping() (*ServerInfo, error) {
 	res, err := p.readPacket(rd)
 
 	if err != nil {
-		return nil, err
+		return nil, errors.New("error reading packet response: " + err.Error())
 	}
 
 	info, err := parseServerInfo([]byte(res.Json))
@@ -161,12 +162,14 @@ func (p *mcPinger) readPacket(rd *bufio.Reader) (*packet.ResponsePacket, error) 
 	}
 
 	if err != nil {
+		log.Println("error reading packet header")
 		return nil, err
 	}
 
 	err = rp.Unmarshal(rd)
 
 	if err != nil {
+		log.Println("error unmarshalling")
 		return nil, err
 	}
 
